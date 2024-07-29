@@ -23,7 +23,7 @@ jobs:
         miniforge-version: latest
         environment-file: episodes/files/conda_env.yaml
 
-    - name: Configure Conda
+    - name: Configure Conda as per lesson setup
       run: |
         cat >~/.condarc <<END
         channels:
@@ -32,6 +32,16 @@ jobs:
         solver: libmamba
         channel_priority: strict
         END
+
+    - name: Confirm Snakemake Version
+      shell: bash -eo pipefail -l {0} # Needed for conda
+      run: |
+        conda env list
+        echo ---
+        which snakemake
+        snakemake --version
+        which rename
+        rename --man | head -n 8
 
     - name: Download the sample data
       run: |
@@ -46,13 +56,6 @@ jobs:
       run: |
         cd snakemake_data/yeast/reads
         rename -v -s ref ref_ *
-
-    - name: Confirm Snakemake Version
-      shell: bash -eo pipefail -l {0} # Needed for conda
-      run: |
-        conda env list
-        echo ---
-        snakemake --version
 
     - name: Test ep07.Snakefile
       shell: bash -eo pipefail -l {0} # Needed for conda
