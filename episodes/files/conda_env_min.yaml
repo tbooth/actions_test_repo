@@ -1,0 +1,16 @@
+name: snakemake_carpentry
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - fastqc
+  - fastx_toolkit
+  - gnuplot
+  - graphicsmagick
+  - graphviz
+  - kallisto
+  - multiqc
+  - rename
+  - salmon
+  - snakemake>8.5.0
+prefix: /home/zenmaster/miniforge3/envs/snakemake_carpentry
