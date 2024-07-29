@@ -1,0 +1,30 @@
+# Upon each push, we would like to:
+#
+# 1) Install the conda environment (episodes/files/conda_env.yaml)
+# 2) ...
+#
+
+name: Code tests
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  auto_test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+    - name: Install Conda
+      uses: conda-incubator/setup-miniconda@v3
+      with:
+        miniforge-version: latest
+        environment-file: episodes/files/conda_env.yaml
+
+    - name: Run Snakemake
+      shell: bash -eo pipefail -el {0} # Needed for conda
+      run: |
+        snakemake --version
+
