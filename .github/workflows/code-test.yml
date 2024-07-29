@@ -23,10 +23,53 @@ jobs:
         miniforge-version: latest
         environment-file: episodes/files/conda_env.yaml
 
-    - name: Run Snakemake
-      shell: bash -eo pipefail -el {0} # Needed for conda
+    - name: Configure Conda
+      run: |
+        cat >~/.condarc <<END
+        channels:
+          - conda-forge
+          - bioconda
+        solver: libmamba
+        channel_priority: strict
+        END
+
+    - name: Download the sample data
+      run: |
+        wget --content-disposition https://figshare.com/ndownloader/files/42467370
+        tar -xvaf data-for-snakemake-novice-bioinformatics.tar.xz
+
+        cd snakemake_data/yeast/reads
+        rename -v -s ref ref_ *
+
+    - name: Fix the file names as per ep05
+      shell: bash -eo pipefail -l {0} # Needed for conda
+      run: |
+        cd snakemake_data/yeast/reads
+        rename -v -s ref ref_ *
+
+    - name: Confirm Snakemake Version
+      shell: bash -eo pipefail -l {0} # Needed for conda
       run: |
         conda env list
         echo ---
         snakemake --version
 
+    - name: Test ep07.Snakefile
+      shell: bash -eo pipefail -l {0} # Needed for conda
+      run: |
+        cp -vf episodes/files/ep07.Snakefile snakemake_data/yeast/Snakefile
+        cd snakemake_data/yeast
+        snakemake -j1 -p multiqc
+        test -e multiqc_out/multiqc_report.html
+
+    - name: Test assembly Snakefile
+      shell: bash -eo pipefail -l {0} # Needed for conda
+      run: |
+        cp -vf episodes/files/assembly_with_conda.Snakefile snakemake_data/yeast/Snakefile
+        cd snakemake_data/yeast
+
+        snakemake -j1 -p --sdm conda
+
+        conda env list
+        ls assem
+        [[ wc -w <<<(ls -f assem/*_max_contig.txt) == 12 ]]
