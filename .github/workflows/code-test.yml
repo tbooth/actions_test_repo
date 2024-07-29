@@ -26,5 +26,7 @@ jobs:
     - name: Run Snakemake
       shell: bash -eo pipefail -el {0} # Needed for conda
       run: |
+        conda env list
+        echo ---
         snakemake --version
 
