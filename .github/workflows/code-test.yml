@@ -49,11 +49,8 @@ jobs:
 
     - name: Download the sample data
       run: |
-        wget --content-disposition https://figshare.com/ndownloader/files/42467370
+        wget --progress=dot:mega --content-disposition https://figshare.com/ndownloader/files/42467370
         tar -xvaf data-for-snakemake-novice-bioinformatics.tar.xz
-
-        cd snakemake_data/yeast/reads
-        rename -v -s ref ref_ *
 
     - name: Fix the file names as per ep05
       run: |
