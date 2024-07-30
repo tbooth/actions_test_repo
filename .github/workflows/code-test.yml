@@ -28,6 +28,7 @@ jobs:
         activate-environment: snakemake_carpentry
         environment-file: episodes/files/conda_env.yaml
 
+    # This only matters for the assembly test, where Snakemake installs packages
     - name: Configure Conda as per lesson setup
       run: |
         cat >~/.condarc <<END
@@ -52,25 +53,23 @@ jobs:
         wget --progress=dot:mega --content-disposition https://figshare.com/ndownloader/files/42467370
         tar -xvaf data-for-snakemake-novice-bioinformatics.tar.xz
 
-    - name: Fix the file names as per ep05
-      run: |
-        cd snakemake_data/yeast/reads
-        rename -v -s ref ref_ *
+    # Check all the interim answers with fresh data dir
 
-    - name: Test ep07.Snakefile
+    - name: Test interim answers
       run: |
-        cp -vf episodes/files/ep07.Snakefile snakemake_data/yeast/Snakefile
-        cd snakemake_data/yeast
-        snakemake -j1 -p multiqc
-        test -e multiqc_out/multiqc_report.html
+        for tf in .test/ep*.test.sh ; do
+          rm -rf snakemake_data
+          tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
+          echo "Running $tf..."
+          ( set -euo pipefail ; source $tf )
+          echo
+        done
+
+    # Check the solution to the larger exercise
 
     - name: Test assembly Snakefile
       run: |
-        cp -vf episodes/files/assembly_with_conda.Snakefile snakemake_data/yeast/Snakefile
-        cd snakemake_data/yeast
+        rm -rf snakemake_data
+        tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
 
-        snakemake -j1 -p --sdm conda
-
-        conda env list
-        ls assem
-        [[ wc -w <<<(ls -f assem/*_max_contig.txt) == 12 ]]
+        ( set -euo pipefail ; source .test/assembly.test.sh )
