@@ -5,5 +5,5 @@ cd snakemake_data/yeast
 
 snakemake -j1 -p kallisto.etoh60_1/abundance.h5 trimmed.etoh60_2_2.fq.count
 
-test -e trimmed/etoh60_2_2.fq
-test -e kallisto.etoh60_1/abundance.h5
+test -s trimmed/etoh60_2_2.fq
+test -s kallisto.etoh60_1/abundance.h5
