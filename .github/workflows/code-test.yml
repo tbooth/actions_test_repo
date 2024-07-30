@@ -19,6 +19,11 @@ jobs:
         shell: bash -eo pipefail -l {0} # Needed for conda
 
     steps:
+    - uses: awalsh128/cache-apt-pkgs-action@latest
+      name: Install extra packages
+      with:
+        packages: jq
+
     - uses: actions/checkout@main
     - name: Install Conda
       uses: conda-incubator/setup-miniconda@v3
@@ -54,7 +59,6 @@ jobs:
         tar -xvaf data-for-snakemake-novice-bioinformatics.tar.xz
 
     # Check all the interim answers with fresh data dir
-
     - name: Test interim answers
       run: |
         for tf in .test/ep*.test.sh ; do
@@ -65,11 +69,14 @@ jobs:
           echo
         done
 
-    # Check the solution to the larger exercise
-
-    - name: Test assembly Snakefile
+    # Check the sample script and the solution to the larger exercise
+    - name: Test assembly BASH script and Snakefile
       run: |
-        rm -rf snakemake_data
-        tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
+        for tf in .test/assembly_*.test.sh ; do
+          rm -rf snakemake_data
+          tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
 
-        ( set -euo pipefail ; source .test/assembly.test.sh )
+          echo "Running $tf..."
+          ( set -euo pipefail ; source $tf )
+          echo
+        done
