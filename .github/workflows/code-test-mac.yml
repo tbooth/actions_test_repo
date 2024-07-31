@@ -25,6 +25,11 @@ jobs:
 
     - uses: actions/checkout@main
 
+    # On Mac we need to add coreutils (for md5sum etc.)
+    - name: Add the GNU coreutils package
+      run: |
+        brew install coreutils
+
     # Do this first. It looks like figshare denies downloads after a few times, so we may need
     # to mirror the file somewhere else. At least this will fail fast.
     # - name: Download the sample data
