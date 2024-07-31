@@ -10,7 +10,8 @@ cd snakemake_data/yeast
 
 snakemake -s assembly_with_conda.Snakefile -j1 -p --sdm conda
 
-# We should have 12 assemblies
+# We should have made a new conda env
 conda env list | grep .snakemake
 ls assem
-[[ wc -w <<<(ls -f assem/*_max_contig.txt) == 12 ]]
+# We should have 12 assemblies
+[[ $(echo assem/*_max_contig.txt | wc -w) == 12 ]]

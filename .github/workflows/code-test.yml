@@ -79,7 +79,7 @@ jobs:
           tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
           echo "Running $tf..."
           ( set -euo pipefail ; source $tf )
-          echo
+          printf '\n-\n'
         done
 
     # Check the sample script and the solution to the larger exercise
@@ -91,5 +91,5 @@ jobs:
 
           echo "Running $tf..."
           ( set -euo pipefail ; source $tf )
-          echo
+          printf '\n-\n'
         done
