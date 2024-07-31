@@ -36,6 +36,9 @@ jobs:
 
         md5sum -c <<<"4522e76f9dddda13e55f7d283638e628  data-for-snakemake-novice-bioinformatics.tar.xz"
 
+        pwd
+        ls -l
+
     - uses: awalsh128/cache-apt-pkgs-action@latest
       name: Install extra packages
       with:
@@ -73,6 +76,9 @@ jobs:
     # Check all the interim answers with fresh data dir
     - name: Test interim answers
       run: |
+        pwd
+        ls -l
+
         for tf in .test/ep*.test.sh ; do
           rm -rf snakemake_data
           tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
