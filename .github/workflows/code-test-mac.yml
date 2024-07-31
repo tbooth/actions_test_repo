@@ -11,12 +11,12 @@ name: Code sample tests
 on:
   push:
     branches: [ master ]
-    paths: ['episodes/files/**']
+    paths: ['episodes/files/**', '.test/**', '.github/workflows/code-test-mac.yml']
 
 jobs:
   auto_test:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     defaults:
       run:
         shell: bash -eo pipefail -l {0} # Needed for conda
@@ -41,20 +41,13 @@ jobs:
 
         md5sum -c <<<"4522e76f9dddda13e55f7d283638e628  data-for-snakemake-novice-bioinformatics.tar.xz"
 
-    # I use 'jq' for inspecting a JSON file in a later test. Could install it via conda instead,
-    # or just grep the JSON file to avoid the dependency.
-    - uses: awalsh128/cache-apt-pkgs-action@latest
-      name: Install extra packages
-      with:
-        packages: jq
-
     - name: Install Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
         miniforge-version: latest
         use-mamba: false
         activate-environment: snakemake_carpentry
-        environment-file: episodes/files/conda_env.yaml
+        environment-file: episodes/files/conda_env_min.yaml
 
     # This only matters for the assembly test, where Snakemake installs packages
     - name: Configure Conda as per lesson setup
