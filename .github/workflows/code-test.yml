@@ -20,6 +20,8 @@ jobs:
 
     steps:
 
+    - uses: actions/checkout@main
+
     # Do this first. It looks like figshare denies downloads after a few times, so we may need
     # to mirror the file somewhere else. At least this will fail fast.
     # - name: Download the sample data
@@ -36,15 +38,11 @@ jobs:
 
         md5sum -c <<<"4522e76f9dddda13e55f7d283638e628  data-for-snakemake-novice-bioinformatics.tar.xz"
 
-        pwd
-        ls -l
-
     - uses: awalsh128/cache-apt-pkgs-action@latest
       name: Install extra packages
       with:
         packages: jq
 
-    - uses: actions/checkout@main
     - name: Install Conda
       uses: conda-incubator/setup-miniconda@v3
       with:
@@ -76,9 +74,6 @@ jobs:
     # Check all the interim answers with fresh data dir
     - name: Test interim answers
       run: |
-        pwd
-        ls -l
-
         for tf in .test/ep*.test.sh ; do
           rm -rf snakemake_data
           tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
