@@ -10,8 +10,9 @@ cd snakemake_data/yeast
 
 snakemake -s assembly_with_conda.Snakefile -j1 -p --sdm conda
 
-# We should have made a new conda env
-conda env list | grep .snakemake
+# We should have made a new conda env, but remove it
+for e in $(conda env list | grep -F /.snakemake/) ; do echo conda env remove --yes -p "$e" ; done
+
 ls assem
 # We should have 12 assemblies
 [[ $(echo assem/*_max_contig.txt | wc -w) == 12 ]]
