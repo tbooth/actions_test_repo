@@ -19,6 +19,23 @@ jobs:
         shell: bash -eo pipefail -l {0} # Needed for conda
 
     steps:
+
+    # Do this first. It looks like figshare denies downloads after a few times, so we may need
+    # to mirror the file somewhere else. At least this will fail fast.
+    # - name: Download the sample data
+    #   run: |
+    #     wget --progress=dot:mega --content-disposition https://figshare.com/ndownloader/files/42467370
+    #     md5sum -c <<<"4522e76f9dddda13e55f7d283638e628  data-for-snakemake-novice-bioinformatics.tar.xz"
+
+    # Let's use this copy for testing. Yes it's in .xz.gz format, otherwise GitHub won't accept it.
+    - name: Download the sample data from GitHub
+      run: |
+        wget --progress=dot:mega \
+          https://github.com/user-attachments/files/16439467/data-for-snakemake-novice-bioinformatics.tar.xz.gz
+        gunzip data-for-snakemake-novice-bioinformatics.tar.xz
+
+        md5sum -c <<<"4522e76f9dddda13e55f7d283638e628  data-for-snakemake-novice-bioinformatics.tar.xz"
+
     - uses: awalsh128/cache-apt-pkgs-action@latest
       name: Install extra packages
       with:
@@ -30,6 +47,7 @@ jobs:
       with:
         miniforge-version: latest
         use-mamba: false
+        use-only-tar-bz2: true
         activate-environment: snakemake_carpentry
         environment-file: episodes/files/conda_env.yaml
 
@@ -52,11 +70,6 @@ jobs:
         snakemake --version
         which rename
         ( rename --man | head -n 8 ) || true
-
-    - name: Download the sample data
-      run: |
-        wget --progress=dot:mega --content-disposition https://figshare.com/ndownloader/files/42467370
-        tar -xvaf data-for-snakemake-novice-bioinformatics.tar.xz
 
     # Check all the interim answers with fresh data dir
     - name: Test interim answers

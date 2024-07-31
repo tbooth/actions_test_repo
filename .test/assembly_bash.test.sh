@@ -11,9 +11,11 @@ cd snakemake_data/yeast
 ( cd reads ; rename -v -s ref ref_ ref?_?.fq )
 
 # This time we need to install the conda env manually
-conda env create --quiet --force --file assembly_conda_env.yaml -n assembly_env
-conda activate assembly_env
+conda env create --yes --quiet --file assembly_conda_env.yaml -n assembly_bash_test_env
+conda activate assembly_bash_test_env
 
-# We should have max_contig.txt with one line
+bash ./assembly_script.sh
+
+# We should have generated max_contig.txt with one line
 res1=$( wc -l <max_contig.txt )
 [[ "$res1" == 1 ]]
