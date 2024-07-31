@@ -8,7 +8,8 @@ cd snakemake_data/yeast
 # The Snakefile assumes renames are applied
 ( cd reads ; rename -v -s ref ref_ ref?_?.fq )
 
-snakemake -s assembly_with_conda.Snakefile -j1 -p --sdm conda
+# Use all the cores
+snakemake -s assembly_with_conda.Snakefile -c all -p --sdm conda
 
 # We should have made a new conda env, but remove it
 for e in $(conda env list | grep -F /.snakemake/) ; do echo conda env remove --yes -p "$e" ; done
