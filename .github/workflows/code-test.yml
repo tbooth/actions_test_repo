@@ -47,7 +47,6 @@ jobs:
       with:
         miniforge-version: latest
         use-mamba: false
-        use-only-tar-bz2: true
         activate-environment: snakemake_carpentry
         environment-file: episodes/files/conda_env.yaml
 
