@@ -1,14 +1,17 @@
-# Upon each push, we would like to:
+# Upon each push, if anything under episodes/files/ is changed, we would like to:
 #
-# 1) Install the conda environment (episodes/files/conda_env.yaml)
-# 2) ...
+# 1) Download the sample data
+# 2) Install the conda environment (episodes/files/conda_env.yaml)
+# 3) Test every ep??.Snakefile
+# 4) Test the assembly script and the sample answer
 #
 
-name: Code tests
+name: Code sample tests
 
 on:
   push:
     branches: [ master ]
+    paths: ['episodes/files/**']
 
 jobs:
   auto_test:
