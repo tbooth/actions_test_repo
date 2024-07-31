@@ -20,5 +20,5 @@ res2=$( snakemake -Fn -p multiqc | \
 rm -f Saccharomyces_cerevisiae.R64-1-1.kallisto_index
 snakemake -j1 -p Saccharomyces_cerevisiae.R64-1-1.kallisto_index
 perms=$(stat --format %A Saccharomyces_cerevisiae.R64-1-1.kallisto_index)
-[[ "$perms" == "-r--r--r--" ]
-rm -f Saccharomyces_cerevisiae.R64-1-1.kallisto_index
+[[ "$perms" == "-r--r--r--" ]]
+rm -vf Saccharomyces_cerevisiae.R64-1-1.kallisto_index
