@@ -6,7 +6,7 @@
 # 4) Test the assembly script and the sample answer
 #
 
-name: Code sample tests
+name: Code sample tests on Ubuntu
 
 on:
   push:
@@ -75,6 +75,17 @@ jobs:
         for tf in .test/ep*.test.sh ; do
           rm -rf snakemake_data
           tar -xaf data-for-snakemake-novice-bioinformatics.tar.xz
+          echo "Running $tf..."
+          ( set -euo pipefail ; source $tf )
+          printf '\n-\n'
+        done
+
+    # Test the shadow demo
+    - name: Test shadow demo
+      run: |
+        for tf in .test/shadow.test.sh ; do
+          rm -rf snakemake_data
+          mkdir snakemake_data
           echo "Running $tf..."
           ( set -euo pipefail ; source $tf )
           printf '\n-\n'

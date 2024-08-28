@@ -6,11 +6,14 @@
 # 4) Test the assembly script and the sample answer
 #
 
-name: Code sample tests
+# Note that the Mac ARM (M-series) version currently always fails as some required packages
+# are not available for Mac in Bioconda. These could be added to bioconda.
+
+name: Code sample tests on MacOS
 
 on:
   push:
-    branches: [ master ]
+    branches: [ macos ]
     paths: ['episodes/files/**', '.test/**', '.github/workflows/code-test-mac.yml']
 
 jobs:
