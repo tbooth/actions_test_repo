@@ -18,7 +18,7 @@ test -s multiqc_out/multiqc_report.html
 snakemake -j1 --delete-all-output multiqc
 test '!' -e multiqc_out
 
-snakemake -j1 -s wrappers.Snakefile -p multiqc
+snakemake -c all -s wrappers.Snakefile -p multiqc
 
 # Report should appear again
 test -s multiqc_out/multiqc_report.html
