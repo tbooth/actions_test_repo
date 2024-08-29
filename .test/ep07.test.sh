@@ -7,6 +7,8 @@ cd snakemake_data/yeast
 # This assumes renames are applied
 ( cd reads ; rename -v -s ref ref_ ref?_?.fq )
 
+set -x # So I can see what's running.
+
 snakemake -j1 -p multiqc
 
 # Report should appear
